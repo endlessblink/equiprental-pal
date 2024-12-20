@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Equipment", icon: Film, url: "/" },
-  { title: "Calendar", icon: Calendar, url: "/calendar" },
-  { title: "QR Scanner", icon: QrCode, url: "/scanner" },
-  { title: "Notifications", icon: Bell, url: "/notifications" },
-  { title: "Settings", icon: Settings, url: "/settings" },
+  { title: "ציוד", icon: Film, url: "/" },
+  { title: "לוח שנה", icon: Calendar, url: "/calendar" },
+  { title: "סורק QR", icon: QrCode, url: "/scanner" },
+  { title: "התראות", icon: Bell, url: "/notifications" },
+  { title: "הגדרות", icon: Settings, url: "/settings" },
 ];
 
 export function AppSidebar() {
@@ -23,7 +23,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Film Equipment</SidebarGroupLabel>
+          <SidebarGroupLabel>ציוד צילום</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

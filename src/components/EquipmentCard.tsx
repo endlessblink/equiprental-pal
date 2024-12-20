@@ -16,9 +16,31 @@ export function EquipmentCard({ equipment, onRent }: EquipmentCardProps) {
     if (onRent) {
       onRent(equipment);
       toast({
-        title: "Equipment Selected",
-        description: "Please choose your rental dates.",
+        title: "הציוד נבחר",
+        description: "אנא בחר תאריכי השכרה",
       });
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'זמין';
+      case 'rented':
+        return 'מושכר';
+      default:
+        return 'לא זמין';
+    }
+  };
+
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'bg-green-100 text-green-800';
+      case 'rented':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-yellow-100 text-yellow-800';
     }
   };
 
@@ -27,12 +49,8 @@ export function EquipmentCard({ equipment, onRent }: EquipmentCardProps) {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{equipment.name}</span>
-          <span className={`px-2 py-1 text-sm rounded-full ${
-            equipment.status === 'available' ? 'bg-green-100 text-green-800' :
-            equipment.status === 'rented' ? 'bg-red-100 text-red-800' :
-            'bg-yellow-100 text-yellow-800'
-          }`}>
-            {equipment.status}
+          <span className={`px-2 py-1 text-sm rounded-full ${getStatusClass(equipment.status)}`}>
+            {getStatusText(equipment.status)}
           </span>
         </CardTitle>
       </CardHeader>
@@ -43,7 +61,7 @@ export function EquipmentCard({ equipment, onRent }: EquipmentCardProps) {
           className="w-full h-48 object-cover rounded-md mb-4"
         />
         <p className="text-sm text-gray-600">{equipment.description}</p>
-        <p className="text-sm text-gray-500 mt-2">Category: {equipment.category}</p>
+        <p className="text-sm text-gray-500 mt-2">קטגוריה: {equipment.category}</p>
       </CardContent>
       <CardFooter>
         <Button
@@ -52,7 +70,7 @@ export function EquipmentCard({ equipment, onRent }: EquipmentCardProps) {
           className="w-full"
         >
           <Calendar className="mr-2 h-4 w-4" />
-          Rent Equipment
+          השכר ציוד
         </Button>
       </CardFooter>
     </Card>
