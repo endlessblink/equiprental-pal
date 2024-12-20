@@ -7,6 +7,10 @@ export interface Equipment {
   imageUrl: string;
   qrCode: string;
   quantity?: number;
+  renter?: {
+    name: string;
+    returnDate: string;
+  };
 }
 
 export interface RentalPeriod {

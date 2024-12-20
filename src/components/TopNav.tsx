@@ -1,10 +1,11 @@
-import { Film, Calendar, QrCode, Bell, Settings } from "lucide-react";
+import { Film, Calendar, QrCode, Bell, Settings, ShieldCheck, UserGroup } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const menuItems = [
-  { title: "ציוד", icon: Film, url: "/" },
+  { title: "ציוד", icon: QrCode, url: "/" },
   { title: "לוח שנה", icon: Calendar, url: "/calendar" },
-  { title: "סורק QR", icon: QrCode, url: "/scanner" },
+  { title: "תלמידים", icon: UserGroup, url: "/students" },
+  { title: "ניהול", icon: ShieldCheck, url: "/admin" },
   { title: "התראות", icon: Bell, url: "/notifications" },
   { title: "הגדרות", icon: Settings, url: "/settings" },
 ];

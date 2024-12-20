@@ -9,7 +9,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { format } from "date-fns";
 
 // Mock data - replace with actual data from your backend
 const initialEvents = [
@@ -18,12 +22,16 @@ const initialEvents = [
     start: '2024-12-21',
     end: '2024-12-23',
     backgroundColor: '#3b82f6',
+    equipment: 'מצלמת Canon',
+    renter: 'דני כהן',
   },
   {
     title: 'חצובה - שרה לוי',
     start: '2024-12-20',
     end: '2024-12-21',
     backgroundColor: '#10b981',
+    equipment: 'חצובה',
+    renter: 'שרה לוי',
   },
 ];
 
@@ -32,19 +40,44 @@ interface RentalEvent {
   start: string;
   end: string;
   backgroundColor?: string;
+  equipment?: string;
+  renter?: string;
 }
 
 const Calendar = () => {
   const [events, setEvents] = useState<RentalEvent[]>(initialEvents);
   const [selectedEvent, setSelectedEvent] = useState<RentalEvent | null>(null);
+  const [editedEvent, setEditedEvent] = useState<RentalEvent | null>(null);
 
   const handleEventClick = (info: any) => {
-    setSelectedEvent({
+    const event = {
       title: info.event.title,
       start: info.event.startStr,
       end: info.event.endStr,
       backgroundColor: info.event.backgroundColor,
-    });
+      equipment: info.event._def.extendedProps.equipment,
+      renter: info.event._def.extendedProps.renter,
+    };
+    setSelectedEvent(event);
+    setEditedEvent(event);
+  };
+
+  const handleSave = () => {
+    if (editedEvent && selectedEvent) {
+      // Update the events array with the edited event
+      setEvents(events.map(event => 
+        event.title === selectedEvent.title ? {
+          ...event,
+          title: `${editedEvent.equipment} - ${editedEvent.renter}`,
+          equipment: editedEvent.equipment,
+          renter: editedEvent.renter,
+          start: editedEvent.start,
+          end: editedEvent.end,
+        } : event
+      ));
+      setSelectedEvent(null);
+      setEditedEvent(null);
+    }
   };
 
   return (
@@ -73,29 +106,61 @@ const Calendar = () => {
           />
         </div>
 
-        <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
-          <DialogContent>
+        <Dialog open={!!selectedEvent} onOpenChange={() => {
+          setSelectedEvent(null);
+          setEditedEvent(null);
+        }}>
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>פרטי השאלה</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
-              {selectedEvent && (
-                <>
-                  <div>
-                    <h4 className="font-semibold">ציוד ושואל:</h4>
-                    <p>{selectedEvent.title}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">תאריך התחלה:</h4>
-                    <p>{new Date(selectedEvent.start).toLocaleDateString('he-IL')}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">תאריך סיום:</h4>
-                    <p>{new Date(selectedEvent.end).toLocaleDateString('he-IL')}</p>
-                  </div>
-                </>
-              )}
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="equipment">ציוד</Label>
+                <Input
+                  id="equipment"
+                  value={editedEvent?.equipment || ''}
+                  onChange={(e) => setEditedEvent(prev => prev ? {...prev, equipment: e.target.value} : null)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="renter">שואל</Label>
+                <Input
+                  id="renter"
+                  value={editedEvent?.renter || ''}
+                  onChange={(e) => setEditedEvent(prev => prev ? {...prev, renter: e.target.value} : null)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="startDate">תאריך התחלה</Label>
+                <Input
+                  id="startDate"
+                  type="date"
+                  value={editedEvent?.start || ''}
+                  onChange={(e) => setEditedEvent(prev => prev ? {...prev, start: e.target.value} : null)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="endDate">תאריך סיום</Label>
+                <Input
+                  id="endDate"
+                  type="date"
+                  value={editedEvent?.end || ''}
+                  onChange={(e) => setEditedEvent(prev => prev ? {...prev, end: e.target.value} : null)}
+                />
+              </div>
             </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => {
+                setSelectedEvent(null);
+                setEditedEvent(null);
+              }}>
+                ביטול
+              </Button>
+              <Button onClick={handleSave}>
+                שמור שינויים
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </main>
