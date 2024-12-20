@@ -45,7 +45,7 @@ const Index = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full" dir="rtl">
+      <div className="min-h-screen flex flex-row-reverse w-full" dir="rtl">
         <AppSidebar />
         <main className="flex-1 p-6">
           <h1 className="text-3xl font-bold mb-6">מלאי ציוד צילום</h1>
