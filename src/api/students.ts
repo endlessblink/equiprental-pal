@@ -1,65 +1,73 @@
 import { Student } from "@/types/student";
-import { supabase } from "@/lib/supabase";
+
+// Local storage key
+const STORAGE_KEY = 'equipment-pal-students';
+
+// Helper to generate unique IDs
+const generateId = () => Math.random().toString(36).substr(2, 9);
+
+// Helper to get initial data
+const getInitialData = (): Student[] => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored ? JSON.parse(stored) : [];
+};
 
 export async function getStudents() {
-  const { data, error } = await supabase
-    .from('students')
-    .select('*')
-    .order('name');
-  
-  if (error) throw error;
-  return data as Student[];
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return getInitialData();
 }
 
 export async function getStudent(id: string) {
-  const { data, error } = await supabase
-    .from('students')
-    .select('*')
-    .eq('id', id)
-    .single();
-  
-  if (error) throw error;
-  return data as Student;
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const students = getInitialData();
+  const student = students.find(s => s.id === id);
+  if (!student) throw new Error('Student not found');
+  return student;
 }
 
 export async function createStudent(student: Omit<Student, 'id'>) {
-  const { data, error } = await supabase
-    .from('students')
-    .insert([student])
-    .select()
-    .single();
-  
-  if (error) throw error;
-  return data as Student;
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const students = getInitialData();
+  const newStudent = {
+    ...student,
+    id: generateId(),
+  };
+  students.push(newStudent);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+  return newStudent;
 }
 
-export async function updateStudent(id: string, student: Partial<Student>) {
-  const { data, error } = await supabase
-    .from('students')
-    .update(student)
-    .eq('id', id)
-    .select()
-    .single();
+export async function updateStudent(id: string, update: Partial<Student>) {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const students = getInitialData();
+  const index = students.findIndex(s => s.id === id);
+  if (index === -1) throw new Error('Student not found');
   
-  if (error) throw error;
-  return data as Student;
+  const updatedStudent = {
+    ...students[index],
+    ...update,
+  };
+  students[index] = updatedStudent;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+  return updatedStudent;
 }
 
 export async function deleteStudent(id: string) {
-  const { error } = await supabase
-    .from('students')
-    .delete()
-    .eq('id', id);
-  
-  if (error) throw error;
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const students = getInitialData();
+  const filtered = students.filter(s => s.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
 }
 
-export async function importStudents(students: Omit<Student, 'id'>[]) {
-  const { data, error } = await supabase
-    .from('students')
-    .insert(students)
-    .select();
-  
-  if (error) throw error;
-  return data as Student[];
+export async function importStudents(newStudents: Omit<Student, 'id'>[]) {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const students = getInitialData();
+  const studentsWithIds = newStudents.map(student => ({
+    ...student,
+    id: generateId(),
+  }));
+  const updated = [...students, ...studentsWithIds];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  return studentsWithIds;
 }
