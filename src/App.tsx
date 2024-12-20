@@ -4,6 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Calendar from "./pages/Calendar";
+import Scanner from "./pages/Scanner";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +19,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* TODO: Add routes for Calendar, Scanner, Notifications, and Settings */}
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/scanner" element={<Scanner />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
-import { EquipmentCard } from "@/components/EquipmentCard";
 import { Equipment } from "@/types/equipment";
+import { EquipmentCard } from "@/components/EquipmentCard";
+import { TopNav } from "@/components/TopNav";
 
 // Mock data - replace with actual data later
 const mockEquipment: Equipment[] = [
@@ -44,23 +43,20 @@ const Index = () => {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex flex-row-reverse w-full" dir="rtl">
-        <AppSidebar />
-        <main className="flex-1 p-6">
-          <h1 className="text-3xl font-bold mb-6">מלאי ציוד צילום</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockEquipment.map((equipment) => (
-              <EquipmentCard
-                key={equipment.id}
-                equipment={equipment}
-                onRent={handleRent}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
-    </SidebarProvider>
+    <div className="min-h-screen w-full" dir="rtl">
+      <TopNav />
+      <main className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mockEquipment.map((equipment) => (
+            <EquipmentCard
+              key={equipment.id}
+              equipment={equipment}
+              onRent={handleRent}
+            />
+          ))}
+        </div>
+      </main>
+    </div>
   );
 };
 
