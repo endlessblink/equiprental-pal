@@ -37,11 +37,6 @@ const mockEquipment: Equipment[] = [
 const Index = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
 
-  const handleRent = (equipment: Equipment) => {
-    setSelectedEquipment(equipment);
-    // TODO: Open rental calendar modal
-  };
-
   return (
     <div className="min-h-screen w-full" dir="rtl">
       <TopNav />
@@ -51,7 +46,6 @@ const Index = () => {
             <EquipmentCard
               key={equipment.id}
               equipment={equipment}
-              onRent={handleRent}
             />
           ))}
         </div>
