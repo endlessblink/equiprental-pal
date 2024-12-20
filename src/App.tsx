@@ -15,6 +15,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          {/* TODO: Add routes for Calendar, Scanner, Notifications, and Settings */}
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
