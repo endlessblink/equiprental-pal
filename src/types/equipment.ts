@@ -6,6 +6,7 @@ export interface Equipment {
   status: 'available' | 'rented' | 'maintenance';
   imageUrl: string;
   qrCode: string;
+  quantity?: number;
 }
 
 export interface RentalPeriod {
@@ -13,4 +14,5 @@ export interface RentalPeriod {
   endDate: Date;
   equipmentId: string;
   userId: string;
+  quantity: number;
 }
